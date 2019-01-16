@@ -1,4 +1,4 @@
-name: nuodb-ce-helm-persistent
+name: nuodb-ce-helm
 version: 0.1.0
 appVersion: 3.3.0
 description: NuoDB Community Edition
