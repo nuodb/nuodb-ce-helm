@@ -1,3 +1,4 @@
+{{if eq .Values.storageMode "persistent"}}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -20,3 +21,4 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/mnt/local-storage/disk0"
+{{end}}
