@@ -1,0 +1,98 @@
+apiVersion: "apps/v1"
+kind: StatefulSet
+metadata:
+  name: sm
+  labels:
+    app: nuodb
+    group: nuodb
+spec:
+  serviceName: sm
+  replicas: 1
+  selector:
+    matchLabels:
+      nodetype: sm
+      database: {{ .Values.dbName | quote }}
+      app: sm
+      group: nuodb
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        nodetype: sm
+        database: {{ .Values.dbName | quote }}
+        app: sm
+        group: nuodb
+    spec:
+      terminationGracePeriodSeconds: 15
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - { key: "nuodb.com/zone",      operator: Exists }
+{{if eq .Values.storageMode "persistent"}}
+                - { key: "nuodb.com/node-type", operator: Exists }
+{{end}}
+      containers:
+      - name: sm
+        image: {{ .Values.container }}
+        imagePullPolicy: IfNotPresent
+        args: [ "nuosm", "--servers-ready-timeout", "300" ]
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Values.dbName }}.nuodb.com"
+              key: database-name
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Values.dbName }}.nuodb.com"
+              key: database-username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Values.dbName }}.nuodb.com"
+              key: database-password
+        - { name: NUOCMD_API_SERVER,   value: "admin.$(NAMESPACE).svc:8888"}
+        - { name: PEER_ADDRESS,        value: "admin.$(NAMESPACE).svc" }
+        - { name: NUODB_OPTIONS,       value: "mem {{ .Values.smMemory }}g {{ .Values.engineOptions }}" }
+        ports:
+        - containerPort: 48006
+          protocol: TCP
+        resources:
+          requests:
+            memory: "{{ .Values.smMemory }}Gi"
+            cpu: {{ .Values.smCpu | quote }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+{{if eq .Values.storageMode "persistent"}}
+        volumeMounts:
+        - mountPath: /var/opt/nuodb/archive
+          name: archive
+  volumeClaimTemplates:
+  - metadata:
+      name: archive
+    spec:
+      labels:
+        app: nuodb
+        group: nuodb
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.smStorageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.smStorageSize }}
+{{end}}
+

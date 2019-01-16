@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nuodb-insights
+  labels:
+    app: insights
+    group: nuodb
+spec:
+{{if eq .Values.storageMode "ephemeral"}}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - { key: "nuodb.com/zone",      operator: Exists }
+{{end}}
+  initContainers:
+  - name: optin
+    image: {{ .Values.container }}
+    imagePullPolicy: IfNotPresent
+    args:
+    - "/bin/sh"
+    - "-c"
+    - "[ \"{{ .Values.insightsEnabled }}\" == \"true\" ] && nuoca enable insights --connect-timeout 300 || nuoca disable insights --connect-timeout 300"
+    env:
+    - { name: NUOCMD_API_SERVER , value: {{ .Values.apiServer | quote }} }
+  containers:
+  - name: insights
+    image: {{ .Values.container }}
+    imagePullPolicy: IfNotPresent
+    args: [ "nuoca", "start" , "nuoca", "--insights" ]
+    env:
+    - { name: NUOCMD_API_SERVER , value: {{ .Values.apiServer | quote }} }
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log/nuodb
+    - name: config-insights
+      mountPath: /etc/nuodb/nuoca.yml.template
+      subPath: nuoca.yml.template
+  - name: insights-server
+    image: {{ .Values.container }}
+    imagePullPolicy: IfNotPresent
+    args: [ "nuoinsights" ]
+    ports:
+    - { name: 8080-tcp,  containerPort: 8080,  protocol: TCP }
+    env:
+    - { name: NUOCMD_API_SERVER , value: {{ .Values.apiServer | quote }} }
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log/nuodb
+    - name: nuoinsights
+      mountPath: /usr/local/bin/nuoinsights
+      subPath: nuoinsights
+  volumes:
+  - name: log-volume
+    emptyDir: {}
+  - name: config-insights
+    configMap:
+      name: insights-configmap
+  - name: nuoinsights
+    configMap:
+      name: insights-configmap
+      defaultMode: 0754

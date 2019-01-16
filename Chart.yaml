@@ -1,0 +1,17 @@
+name: nuodb-ce-helm-persistent
+version: 0.1.0
+appVersion: 3.3.0
+description: NuoDB Community Edition
+  system.
+keywords:
+- nuodb
+- database
+- sql
+home: https://www.nuodb.com/
+icon: https://www.nuodb.com/sites/all/themes/nuodb/logo.svg
+sources:
+- https://github.com/kubernetes/charts
+maintainers:
+- name: tgates
+  email: tgates@nuodb.com
+engine: gotpl
