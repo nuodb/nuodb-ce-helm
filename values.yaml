@@ -128,7 +128,6 @@ container: nuodb/nuodb-ce:3.3.0
 # YCSB fully qualified image name (FQIN) for the Docker image to use
 ycsbContainer: nuodb/ycsb:latest
 
-# testLocalSCPV
+# useLocalSCPV
 # Do not alter, for development purpose
-testLocalSCPV: false
-
+useLocalSCPV: false
