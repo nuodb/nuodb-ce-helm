@@ -1,4 +1,4 @@
-{{if eq .Values.storageMode "persistent"}}
+{{if eq .Values.enableLocalDisk "true"}}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1

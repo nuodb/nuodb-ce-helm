@@ -127,3 +127,4 @@ container: nuodb/nuodb-ce:3.3.0
 # ycsbContainer
 # YCSB fully qualified image name (FQIN) for the Docker image to use
 ycsbContainer: nuodb/ycsb:latest
+
