@@ -1,4 +1,4 @@
-{{if eq .Values.useLocalSCPV "true"}}
+{{if .Values.useLocalSCPV}}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
