@@ -2,7 +2,6 @@
 
 A NuoDB CE Helm Chart for OpenShift with support for both ephemeral and
 persistent storage.
-(See DB-24621)
 
 
 # https://blog.openshift.com/getting-started-helm-openshift/
@@ -37,7 +36,6 @@ Storage Classes and Volumes
 NuoDB uses persistent storage for the Admin Service pods and the storage managers. For each of these you need to define a storage class.
 
 The storage class for the Admin Service pod is configurable by the template parameters.
-We've tested with GlusterFS ("glusterfs-storage") and OpenEBS ("openebs-standard").
 Enter the storage class name you wish to provision for the Admin Service pods.
 
 The storage class for the storage manager is predefined within the `local-disk-class.yaml`  file, along with the volume used by the storage manager. To create these:

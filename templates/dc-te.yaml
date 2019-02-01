@@ -63,7 +63,6 @@ spec:
               fieldPath: metadata.namespace
         - { name: DB_NAME,             value: {{ .Values.dbName | quote }} }
         - { name: NUOCMD_API_SERVER,   value: "admin.$(NAMESPACE).svc:8888"}
-        - { name: PEER_ADDRESS,        value: "admin.$(NAMESPACE).svc" }
         - { name: NUODB_OPTIONS,       value: "mem {{ .Values.teMemory }}g {{ .Values.engineOptions }}" }
         args: [ "nuote", "--servers-ready-timeout", "300", "--database-created-timeout", "300" ]
         ports:

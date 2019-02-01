@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 # run as root
 if [ "$(id -u)" -ne 0 ]; then
-    sudo THEUSER=${USER} $0
+    sudo -n THEUSER=${USER} $0
     exit $?
 fi
 
