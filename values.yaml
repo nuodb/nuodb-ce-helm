@@ -122,7 +122,7 @@ apiServer: https://domain:8888
 # container
 # NuoDB fully qualified image name (FQIN) for the Docker image to use
 # container: "registry.connect.redhat.com/nuodb/nuodb-ce:latest"
-container: nuodb/nuodb-ce:3.3.0
+container: nuodb/nuodb-ce:latest
 
 # ycsbContainer
 # YCSB fully qualified image name (FQIN) for the Docker image to use
