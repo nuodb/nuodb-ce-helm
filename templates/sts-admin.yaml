@@ -75,7 +75,7 @@ spec:
           periodSeconds: 15
           exec:
             command: [ "nuodocker", "check", "servers" ]
-{{if eq .Values.storageMode "persistent"}}
+{{- if eq .Values.storageMode "persistent" }}
           volumeMounts:
           - name: raftlog
             mountPath: /var/opt/nuodb
@@ -84,18 +84,18 @@ spec:
         volumes:
           - name: log-volume
             emptyDir: {}
-    volumeClaimTemplates:
-    - metadata:
-        name: raftlog
-        labels:
-          group: nuodb
-      spec:
-        labels:
-          app: nuodb
-          group: nuodb
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: {{ .Values.adminStorageClass}}
-        resources:
-          requests:
-            storage: {{ .Values.adminStorageSize }}
-{{end}}
+  volumeClaimTemplates:
+  - metadata:
+      name: raftlog
+      labels:
+        group: nuodb
+    spec:
+      labels:
+        app: nuodb
+        group: nuodb
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.adminStorageClass | quote }}
+      resources:
+        requests:
+          storage: {{ .Values.adminStorageSize | quote }}
+{{- end }}
