@@ -10,7 +10,7 @@ metadata:
     app: nuodb
     group: nuodb
 spec:
-  PublishNotReadyAddresses: true
+  publishNotReadyAddresses: true
   clusterIP: None
   ports:
   - { name: 8888-tcp,   port: 8888,   protocol: TCP,  targetPort: 8888  }
