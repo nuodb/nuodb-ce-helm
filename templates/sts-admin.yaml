@@ -33,6 +33,15 @@ spec:
                 values: [ "admin" ]
             topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 15
+      initContainers:
+        # when disk is created and mounted only root can access.  We don't
+        # want to run container as root, so allow gid root to access.
+      - name: init-disk
+        image: busybox:1.28
+        command: ['chmod' , '770', '/var/opt/nuodb/archive' ]
+        volumeMounts:
+        - name: archive
+          mountPath: /var/opt/nuodb/archive
       containers:
       - name: admin
         image: {{ .Values.container }}
