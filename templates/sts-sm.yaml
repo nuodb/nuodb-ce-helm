@@ -30,9 +30,9 @@ spec:
             nodeSelectorTerms:
               - matchExpressions:
                 - { key: "nuodb.com/zone",      operator: Exists }
-{{if eq .Values.storageMode "persistent"}}
+{{- if eq .Values.storageMode "persistent" }}
                 - { key: "nuodb.com/node-type", operator: Exists }
-{{end}}
+{{- end }}
       containers:
       - name: sm
         image: {{ .Values.container }}
@@ -78,7 +78,7 @@ spec:
             cpu: {{ .Values.smCpu | quote }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-{{if eq .Values.storageMode "persistent"}}
+{{- if eq .Values.storageMode "persistent" }}
         volumeMounts:
         - mountPath: /var/opt/nuodb/archive
           name: archive
@@ -90,9 +90,9 @@ spec:
         app: nuodb
         group: nuodb
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: {{ .Values.smStorageClass }}
+      storageClassName: {{ .Values.smStorageClass | quote }}
       resources:
         requests:
-          storage: {{ .Values.smStorageSize }}
-{{end}}
+          storage: {{ .Values.smStorageSize | quote }}
+{{- end }}
 
