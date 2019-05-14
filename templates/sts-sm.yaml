@@ -33,6 +33,15 @@ spec:
 {{- if eq .Values.storageMode "persistent" }}
                 - { key: "nuodb.com/node-type", operator: Exists }
 {{- end }}
+      initContainers:
+        # when disk is created and mounted only root can access.  We don't
+        # want to run container as root, so allow gid root to access.
+      - name: init-disk
+        image: busybox:1.28
+        command: ['chmod' , '770', '/var/opt/nuodb/archive' ]
+        volumeMounts:
+        - name: archive
+          mountPath: /var/opt/nuodb/archive
       containers:
       - name: sm
         image: {{ .Values.container }}
@@ -95,4 +104,3 @@ spec:
         requests:
           storage: {{ .Values.smStorageSize | quote }}
 {{- end }}
-
