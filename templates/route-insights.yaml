@@ -5,6 +5,8 @@ metadata:
   labels:
     group: nuodb
 spec:
+  host: www.example.com
   to:
     kind: Service
     name: insights-server
+    weight: 100

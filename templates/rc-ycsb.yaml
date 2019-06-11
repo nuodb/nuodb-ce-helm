@@ -16,13 +16,13 @@ spec:
         database: {{ .Values.dbName }}
     spec:
       affinity:      
-{{if eq .Values.storageMode "ephemeral"}}
+{{- if eq .Values.storageMode "ephemeral" }}
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
                 - { key: "nuodb.com/zone",      operator: Exists }
-{{end}}
+{{- end }}
         podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 50

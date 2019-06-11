@@ -30,9 +30,18 @@ spec:
             nodeSelectorTerms:
               - matchExpressions:
                 - { key: "nuodb.com/zone",      operator: Exists }
-{{if eq .Values.storageMode "persistent"}}
+{{- if eq .Values.storageMode "persistent" }}
                 - { key: "nuodb.com/node-type", operator: Exists }
-{{end}}
+{{- end }}
+      initContainers:
+        # when disk is created and mounted only root can access.  We don't
+        # want to run container as root, so allow gid root to access.
+      - name: init-disk
+        image: busybox:1.28
+        command: ['chmod' , '770', '/var/opt/nuodb/archive' ]
+        volumeMounts:
+        - name: archive
+          mountPath: /var/opt/nuodb/archive
       containers:
       - name: sm
         image: {{ .Values.container }}
@@ -78,21 +87,20 @@ spec:
             cpu: {{ .Values.smCpu | quote }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-{{if eq .Values.storageMode "persistent"}}
+{{- if eq .Values.storageMode "persistent" }}
         volumeMounts:
         - mountPath: /var/opt/nuodb/archive
           name: archive
   volumeClaimTemplates:
   - metadata:
       name: archive
-    spec:
       labels:
         app: nuodb
         group: nuodb
+    spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: {{ .Values.smStorageClass }}
+      storageClassName: {{ .Values.smStorageClass | quote }}
       resources:
         requests:
-          storage: {{ .Values.smStorageSize }}
-{{end}}
-
+          storage: {{ .Values.smStorageSize | quote }}
+{{- end }}

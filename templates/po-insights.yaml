@@ -6,14 +6,14 @@ metadata:
     app: insights
     group: nuodb
 spec:
-{{if eq .Values.storageMode "ephemeral"}}
+{{- if eq .Values.storageMode "ephemeral" }}
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
             - { key: "nuodb.com/zone",      operator: Exists }
-{{end}}
+{{- end }}
   initContainers:
   - name: optin
     image: {{ .Values.container }}
