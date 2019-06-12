@@ -36,6 +36,10 @@ dbUser: dba
 # Database password
 dbPassword: secret
 
+# smCount
+# Number of Storage manager (SM)  nodes.  Limit is 1 in CE version of NuoDB
+smCount: 1
+
 # smMemory
 # SM memory (in GB)
 smMemory: 2
