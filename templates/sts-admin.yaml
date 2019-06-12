@@ -86,11 +86,17 @@ spec:
             command: [ "nuodocker", "check", "servers" ]
 {{- if eq .Values.storageMode "persistent" }}
         volumeMounts:
+        - name: nuodb-lic-vol
+          mountPath: /etc/nuodb/nuodb.lic
+          subPath: nuodb.lic
         - name: raftlog
           mountPath: /var/opt/nuodb
         - name: log-volume
           mountPath: /var/log/nuodb
       volumes:
+        - name: nuodb-lic-vol
+          configMap:
+            name: nuodb-lic-configmap
         - name: log-volume
           emptyDir: {}
   volumeClaimTemplates:
