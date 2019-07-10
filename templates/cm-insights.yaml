@@ -6,6 +6,8 @@ metadata:
   name: insights-configmap
   labels:
     group: nuodb
+    subgroup: monitoring
+  name: insights-configmap
 data:
   nuoca.yml.template: |
     ---

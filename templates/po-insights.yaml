@@ -1,10 +1,11 @@
-apiVersion: v1
+apiVersion: v1 
 kind: Pod
 metadata:
   name: nuodb-insights
   labels:
     app: insights
     group: nuodb
+    subgroup: monitoring
 spec:
 {{- if eq .Values.storageMode "ephemeral" }}
   affinity:

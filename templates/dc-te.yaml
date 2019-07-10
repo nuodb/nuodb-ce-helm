@@ -1,11 +1,13 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: te
   labels:
     app: nuodb
     group: nuodb
+    subgroup: transaction
     deploymentconfig: te
+    domain: domain
 spec:
   replicas: {{ .Values.teCount }}
   strategy:
@@ -17,7 +19,7 @@ spec:
       maxUnavailable: "25%"
       timeoutSeconds: 600
       updatePeriodSeconds: 1
-    type: Rolling
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -25,6 +27,8 @@ spec:
         deploymentconfig: te
         database: {{ .Values.dbName }}
         nodetype: te
+        group: nuodb
+        subgroup: transaction
     spec:
       affinity:
         nodeAffinity:

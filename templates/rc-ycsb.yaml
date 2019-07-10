@@ -4,6 +4,8 @@ metadata:
   name: {{ .Values.ycsbLoadName }}
   labels:
     group: nuodb
+    subgroup: ycsb
+    domain: domain
 spec:
   replicas: 0
   selector:
