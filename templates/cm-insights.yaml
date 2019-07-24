@@ -71,3 +71,4 @@ data:
 
     export PYTHONPATH=/opt/nuodb/drivers/pynuoadmin
     exec /opt/nuodb/etc/python/nuopython -c "${SCRIPT}"
+    
