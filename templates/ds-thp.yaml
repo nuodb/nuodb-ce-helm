@@ -33,4 +33,3 @@ spec:
         securityContext:
           privileged: true
         command: ["watch", "-n", "600", "cat", "/sys/kernel/mm/transparent_hugepage/enabled"]
-        

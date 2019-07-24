@@ -62,4 +62,3 @@ spec:
     configMap:
       name: insights-configmap
       defaultMode: 0754
-      
