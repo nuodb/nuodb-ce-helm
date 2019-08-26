@@ -33,9 +33,6 @@ spec:
                 values: [ "admin" ]
             topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 15
-      serviceAccount: nuodb-operator
-      securityContext:
-        privileged: true
       initContainers:
         # when disk is created and mounted only root can access.  We don't
         # want to run container as root, so allow gid root to access.
