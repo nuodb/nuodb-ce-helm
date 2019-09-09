@@ -1,15 +1,24 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: te
   labels:
-    app: nuodb
+    app: te
+    deploymentconfig: te
+    database: {{ .Values.dbName }}
+    nodetype: te
     group: nuodb
     subgroup: transaction
-    deploymentconfig: te
-    domain: domain
 spec:
   replicas: {{ .Values.teCount }}
+  selector:
+    matchLabels:
+      app: te
+      deploymentconfig: te
+      database: {{ .Values.dbName }}
+      nodetype: te
+      group: nuodb
+      subgroup: transaction
   strategy:
     activeDeadlineSeconds: 21600
     resources: {}
