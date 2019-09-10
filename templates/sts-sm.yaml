@@ -32,7 +32,7 @@ spec:
                 - { key: "nuodb.com/zone",      operator: Exists }
 {{- if eq .Values.storageMode "persistent" }}
                 - { key: "nuodb.com/node-type", operator: Exists }
-{{- end }}
+
       initContainers:
         # when disk is created and mounted only root can access.  We don't
         # want to run container as root, so allow gid root to access.
@@ -42,6 +42,7 @@ spec:
         volumeMounts:
         - name: archive
           mountPath: /var/opt/nuodb/archive
+{{- end }}
       containers:
       - name: sm
         image: {{ .Values.container }}
