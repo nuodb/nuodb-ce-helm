@@ -4,9 +4,9 @@ A NuoDB CE Helm Chart for OpenShift with support for both ephemeral and persiste
 
 ## References
 
-https://blog.openshift.com/getting-started-helm-openshift/
-https://blog.openshift.com/from-templates-to-openshift-helm-charts/
-https://www.mirantis.com/blog/install-kubernetes-apps-helm/
+* https://blog.openshift.com/getting-started-helm-openshift/
+* https://blog.openshift.com/from-templates-to-openshift-helm-charts/
+* https://www.mirantis.com/blog/install-kubernetes-apps-helm/
 
 ## Requirements
 
@@ -39,7 +39,7 @@ Enter the storage class name you wish to provision for the Admin Service pods.
 
 The storage class for the storage manager is predefined within the `local-disk-class.yaml` file, along with the volume used by the storage manager. To create thesem run :
 
-   oc create -f local-disk-class.yaml
+    oc create -f local-disk-class.yaml
 
 ### Example of deploying a NuoDB CE application using Helm
 
